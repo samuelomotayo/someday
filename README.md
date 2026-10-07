@@ -27,27 +27,68 @@ Free tier: 3 AI analyses. Upgrade to unlock unlimited.
 
 ## How It Works
 
-```
-User logs an idea
-  → title, description, time period, why they stopped, emotional note
-  ↓
-Taps "Analyse"
-  ↓
-Flutter app POSTs to Supabase Edge Function /analyse-idea
-  ↓
-Edge Function validates JWT + checks server-side usage count
-  ↓
-Calls Claude (claude-opus-4-7) with a structured prompt
-  ↓
-Returns one of three verdicts:
-  • second_chance      — signals + next steps
-  • sunset_confirmed   — reasons to let it go
-  • needs_more_context — clarifying questions
-  ↓
-Verdict displayed on screen, usage count incremented
-```
+Everyone has a pile of ideas they started, got excited about, and quietly walked away from. Someday gives those ideas a fair hearing — one last honest look before you move on or pick them back up.
 
-The Anthropic API key **never touches the client**. It lives exclusively as a Supabase Edge Function secret.
+### Step 1 — Sign in
+
+Open the app and sign in with Apple, Google, or email. Your ideas are private to your account and stored securely on your device and in the cloud.
+
+### Step 2 — Add an idea
+
+Tap the **+ Add idea** button on the home screen. You can type your idea or tap the **microphone** button to speak it — the app transcribes your voice directly into the description field.
+
+You'll be asked to fill in a few details:
+
+| Field | Required? | What to write |
+|---|---|---|
+| **What was the idea?** | Yes | A short title — treat it like a project name |
+| **Describe it in detail** | Yes | The vision, who it was for, what made you excited about it |
+| **When did you have this idea?** | Optional | e.g. "2022", "last summer", "during university" |
+| **Why did you stop?** | Optional | e.g. "ran out of time", "couldn't find a co-founder", "lost confidence" |
+| **How do you feel about it now?** | Optional | Your honest emotional take — still excited? Moved on? Not sure? |
+
+The more context you give, the more precise the verdict. But you can always start with just a title and description.
+
+### Step 3 — Review your idea
+
+Your saved idea lives in your personal library on the home screen. Tap it to open the detail view, where you can see everything you wrote, edit any field, or delete it.
+
+### Step 4 — Request a verdict
+
+On the idea detail screen, tap the **Analyse** button. Someday sends your idea to the AI engine — this takes a few seconds. Your data is transmitted securely and your Anthropic API key never leaves the server.
+
+> **Free tier:** You get **3 analyses** on a free account. The count is tracked server-side, so it applies across all your devices.
+
+### Step 5 — Read your verdict
+
+The verdict screen opens with one of three outcomes:
+
+#### 🟢 Second Chance Detected
+The AI thinks this idea is worth another look. The timing may have shifted, the technology may have caught up, or the original blocker may no longer apply. You'll see:
+- A **summary** — an honest 2–3 sentence assessment
+- A **confidence score** — how strongly the signals support the verdict
+- **Signals** — the specific reasons this idea has legs today
+
+#### 🔴 Sunset Confirmed
+Some ideas have genuinely run their course — the market moved on, the original assumption was wrong, or a better solution now exists. The AI will tell you clearly and generously, without dismissing the effort you put in. You'll see:
+- A **summary** of the assessment
+- A list of **reasons** the idea has run its course
+
+#### 🟡 Needs More Context
+The AI doesn't have enough to give a confident verdict yet. Rather than guessing, it surfaces the specific questions that would unlock a clear answer. You'll see:
+- A list of **clarifying questions** to consider
+- You can edit your idea, add more detail, and run the analysis again
+
+### Step 6 — Act on it
+
+After reading the verdict, you can:
+- **View it again** at any time from the idea detail screen
+- **Analyse again** if you've added new context or simply want a fresh take
+- **Edit the idea** to refine your description before re-running
+
+---
+
+> The Anthropic API key **never touches the client**. It lives exclusively as a Supabase Edge Function secret.
 
 ---
 
