@@ -1,0 +1,5 @@
+app_identifier("com.campusrunz.someday")
+apple_id("sam.omotayo@gmail.com")
+
+itc_team_id("") # App Store Connect Team ID — fill in after first run
+team_id("")      # Apple Developer Team ID — fill in after first run

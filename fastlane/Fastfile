@@ -1,0 +1,110 @@
+default_platform(:ios)
+
+# ─── App Store Connect API Key ─────────────────────────────────────────────
+app_store_connect_api_key(
+  key_id: "FBM7945283",
+  issuer_id: "69a6de97-1dae-47e3-e053-5b8c7c11a4d1",
+  key_filepath: "#{ENV['HOME']}/.fastlane/keys/AuthKey_FBM7945283.p8",
+  duration: 1200,
+  in_house: false
+)
+
+# ─── iOS ───────────────────────────────────────────────────────────────────
+platform :ios do
+
+  desc "Sync certificates and provisioning profiles (read-only)"
+  lane :certificates do
+    match(type: "appstore", readonly: true)
+  end
+
+  desc "Run tests on iOS simulator"
+  lane :test do
+    run_tests(
+      scheme: "Runner",
+      devices: ["iPhone 16"],
+      clean: true
+    )
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    # 1. Bump build number to match CI run number
+    increment_build_number(
+      build_number: ENV["BUILD_NUMBER"] || Time.now.strftime("%Y%m%d%H%M"),
+      xcodeproj: "ios/Runner.xcodeproj"
+    )
+
+    # 2. Build Flutter release — secrets injected via --dart-define
+    sh(
+      "flutter build ios --release --no-codesign" \
+      " --dart-define=SUPABASE_URL=#{ENV['SUPABASE_URL']}" \
+      " --dart-define=SUPABASE_ANON_KEY=#{ENV['SUPABASE_ANON_KEY']}",
+      chdir: ".."
+    )
+
+    # 3. Sign and package IPA
+    match(type: "appstore", readonly: true)
+    gym(
+      scheme: "Runner",
+      workspace: "ios/Runner.xcworkspace",
+      export_method: "app-store",
+      output_directory: "build/ios/ipa",
+      output_name: "Someday.ipa",
+      clean: true
+    )
+
+    # 4. Upload to TestFlight
+    pilot(
+      ipa: "build/ios/ipa/Someday.ipa",
+      skip_waiting_for_build_processing: true,
+      changelog: "Automated build from CI — #{ENV['BUILD_NUMBER']}"
+    )
+  end
+
+  desc "Submit to App Store for review"
+  lane :release do
+    deliver(
+      submit_for_review: true,
+      automatic_release: false,
+      force: true,
+      skip_screenshots: true,
+      skip_metadata: false
+    )
+  end
+
+end
+
+# ─── Android ───────────────────────────────────────────────────────────────
+platform :android do
+
+  desc "Build and upload to Play Store internal track"
+  lane :beta do
+    # 1. Build Flutter App Bundle — secrets injected via --dart-define
+    sh(
+      "flutter build appbundle --release" \
+      " --dart-define=SUPABASE_URL=#{ENV['SUPABASE_URL']}" \
+      " --dart-define=SUPABASE_ANON_KEY=#{ENV['SUPABASE_ANON_KEY']}",
+      chdir: ".."
+    )
+
+    # 2. Upload to Play Store internal testing track
+    supply(
+      track: "internal",
+      aab: "build/app/outputs/bundle/release/app-release.aab",
+      json_key: ENV["GOOGLE_PLAY_JSON_KEY_PATH"],
+      skip_upload_apk: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Promote internal build to production"
+  lane :release do
+    supply(
+      track: "internal",
+      track_promote_to: "production",
+      json_key: ENV["GOOGLE_PLAY_JSON_KEY_PATH"]
+    )
+  end
+
+end
