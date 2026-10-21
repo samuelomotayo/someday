@@ -99,13 +99,14 @@ After reading the verdict, you can:
 | Framework | Flutter 3.32+ / Dart 3.12+ |
 | State management | Riverpod 2 (`riverpod_annotation`) |
 | Navigation | go_router 14 |
-| Local database | Drift (SQLite) |
+| Data storage | Supabase Postgres (`ideas` table, realtime sync, RLS-scoped) |
 | Backend / Auth | Supabase |
 | AI engine | Claude via Supabase Edge Function |
-| Code generation | build_runner + freezed + drift_dev |
+| Code generation | build_runner + freezed |
 | Testing | flutter_test + mocktail |
 | CI/CD | GitHub Actions |
-| Deployment | Fastlane (TestFlight + Play Store) |
+| Deployment | Fastlane (TestFlight + Play Store) + web build |
+| Platforms | iOS, Android, Web |
 
 ---
 
@@ -120,7 +121,6 @@ someday/
 │   │   ├── router/app_router.dart       # go_router config + auth guard
 │   │   └── theme/app_theme.dart         # Material theme
 │   ├── data/
-│   │   ├── local/app_database.dart      # Drift schema (Ideas table)
 │   │   └── repositories/
 │   │       └── resurrection_repository.dart  # Edge Function HTTP client
 │   ├── domain/
@@ -216,6 +216,39 @@ create policy "Users can read own usage"
   using (auth.uid() = user_id);
 ```
 
+The app also needs an `ideas` table. This is the source of truth for every idea a
+user has logged — it's what keeps the mobile app and the web app in sync for the
+same signed-in account.
+
+```sql
+-- Ideas table — one row per logged idea, scoped to its owner
+create table if not exists ideas (
+  id                  uuid primary key,
+  user_id             uuid not null references auth.users(id) on delete cascade,
+  title               text not null,
+  description         text not null,
+  created_at          timestamptz not null default now(),
+  time_period         text,
+  reason_for_stopping text,
+  emotional_note      text,
+  verdict             text not null default 'notYetAnalysed',
+  ai_opt_in           boolean not null default false
+);
+
+create index if not exists ideas_user_id_idx on ideas (user_id);
+
+-- Row-level security — each user can only see/modify their own ideas
+alter table ideas enable row level security;
+
+create policy "Users can manage own ideas"
+  on ideas for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+-- Required for realtime sync (live updates across devices/tabs)
+alter publication supabase_realtime add table ideas;
+```
+
 ### 1.3 Enable Auth providers
 
 In *Authentication → Providers*, enable:
@@ -245,7 +278,7 @@ flutter pub get
 
 ### 2.2 Generate code
 
-Riverpod providers, Drift queries, and Freezed models are all code-generated. Run this every time you change an annotated file:
+Riverpod providers and Freezed models are all code-generated. Run this every time you change an annotated file:
 
 ```bash
 dart run build_runner build --delete-conflicting-outputs

@@ -6,24 +6,7 @@ part of 'ideas_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appDatabaseHash() => r'd45cc0b6c7795466b6a12d864805fefa097f39cd';
-
-/// See also [appDatabase].
-@ProviderFor(appDatabase)
-final appDatabaseProvider = AutoDisposeProvider<AppDatabase>.internal(
-  appDatabase,
-  name: r'appDatabaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appDatabaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AppDatabaseRef = AutoDisposeProviderRef<AppDatabase>;
-String _$ideasHash() => r'359f2400bd5f8929f37c2faea21f89a8953e80c4';
+String _$ideasHash() => r'da52c1f2d5c46f93381588a934fb98d2c11886c8';
 
 /// See also [ideas].
 @ProviderFor(ideas)
@@ -40,7 +23,7 @@ final ideasProvider = AutoDisposeStreamProvider<List<domain.Idea>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef IdeasRef = AutoDisposeStreamProviderRef<List<domain.Idea>>;
-String _$ideaByIdHash() => r'175c4253bc262b127f000595a970afec9557191c';
+String _$ideaByIdHash() => r'4cb73080df895333e48a9d799dd46e8d0bda2e12';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -178,7 +161,7 @@ class _IdeaByIdProviderElement
   String get id => (origin as IdeaByIdProvider).id;
 }
 
-String _$ideasNotifierHash() => r'5835fb0b97e0a7d62c2455d2ab4ffd09506aa1c5';
+String _$ideasNotifierHash() => r'bde7ed6b4164cdac27a480a8b4802c3f3bcac028';
 
 /// See also [IdeasNotifier].
 @ProviderFor(IdeasNotifier)

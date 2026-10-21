@@ -18,19 +18,27 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Resurrect your abandoned ideas.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="product_manager_portfolio">
+  <meta name="apple-mobile-web-app-title" content="Someday">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>product_manager_portfolio</title>
+  <title>Someday</title>
   <link rel="manifest" href="manifest.json">
+
+  <!--
+    Required by the `passkeys` plugin (a transitive dependency pulled in by
+    supabase_flutter's auth client). Without this, plugin registration
+    throws on startup even though this app doesn't use passkey sign-in.
+    See: https://github.com/corbado/flutter-passkeys
+  -->
+  <script src="https://github.com/corbado/flutter-passkeys/releases/download/2.4.0/bundle.js"></script>
 </head>
 <body>
   <!--

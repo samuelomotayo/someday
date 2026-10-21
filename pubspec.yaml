@@ -21,13 +21,6 @@ dependencies:
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
 
-  # Local storage — encrypted SQLite
-  drift: ^2.22.1
-  sqlite3: ^2.9.4
-  sqlite3_flutter_libs: ^0.5.29
-  path_provider: ^2.1.5
-  path: ^1.9.1
-
   # Secure key storage
   flutter_secure_storage: ^9.2.4
 
@@ -70,7 +63,6 @@ dev_dependencies:
   riverpod_generator: ^2.6.5
   freezed: ^3.1.0
   json_serializable: ^6.9.4
-  drift_dev: ^2.22.1
 
   # Testing
   mocktail: ^1.0.4
