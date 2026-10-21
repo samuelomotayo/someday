@@ -26,21 +26,69 @@ ThemeData buildAppTheme() {
   final dmSans = GoogleFonts.dmSans;
 
   final textTheme = TextTheme(
-    displayLarge: fraunces(fontSize: 57, fontWeight: FontWeight.w400, color: _slate),
-    displayMedium: fraunces(fontSize: 45, fontWeight: FontWeight.w400, color: _slate),
-    displaySmall: fraunces(fontSize: 36, fontWeight: FontWeight.w400, color: _slate),
-    headlineLarge: fraunces(fontSize: 32, fontWeight: FontWeight.w400, color: _slate),
-    headlineMedium: fraunces(fontSize: 28, fontWeight: FontWeight.w400, color: _slate),
-    headlineSmall: fraunces(fontSize: 24, fontWeight: FontWeight.w400, color: _slate),
-    titleLarge: dmSans(fontSize: 22, fontWeight: FontWeight.w500, color: _slate),
-    titleMedium: dmSans(fontSize: 16, fontWeight: FontWeight.w500, color: _slate),
-    titleSmall: dmSans(fontSize: 14, fontWeight: FontWeight.w500, color: _slate),
+    displayLarge: fraunces(
+      fontSize: 57,
+      fontWeight: FontWeight.w400,
+      color: _slate,
+    ),
+    displayMedium: fraunces(
+      fontSize: 45,
+      fontWeight: FontWeight.w400,
+      color: _slate,
+    ),
+    displaySmall: fraunces(
+      fontSize: 36,
+      fontWeight: FontWeight.w400,
+      color: _slate,
+    ),
+    headlineLarge: fraunces(
+      fontSize: 32,
+      fontWeight: FontWeight.w400,
+      color: _slate,
+    ),
+    headlineMedium: fraunces(
+      fontSize: 28,
+      fontWeight: FontWeight.w400,
+      color: _slate,
+    ),
+    headlineSmall: fraunces(
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      color: _slate,
+    ),
+    titleLarge: dmSans(
+      fontSize: 22,
+      fontWeight: FontWeight.w500,
+      color: _slate,
+    ),
+    titleMedium: dmSans(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: _slate,
+    ),
+    titleSmall: dmSans(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: _slate,
+    ),
     bodyLarge: dmSans(fontSize: 16, color: _slate),
     bodyMedium: dmSans(fontSize: 14, color: _slate),
     bodySmall: dmSans(fontSize: 12, color: _slate.withValues(alpha: 0.7)),
-    labelLarge: dmSans(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white),
-    labelMedium: dmSans(fontSize: 12, fontWeight: FontWeight.w500, color: _slate),
-    labelSmall: dmSans(fontSize: 11, fontWeight: FontWeight.w500, color: _slate),
+    labelLarge: dmSans(
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
+    ),
+    labelMedium: dmSans(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: _slate,
+    ),
+    labelSmall: dmSans(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      color: _slate,
+    ),
   );
 
   return base.copyWith(
@@ -86,9 +134,16 @@ ThemeData buildAppTheme() {
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: false,
-      titleTextStyle: fraunces(fontSize: 22, fontWeight: FontWeight.w400, color: _slate),
+      titleTextStyle: fraunces(
+        fontSize: 22,
+        fontWeight: FontWeight.w400,
+        color: _slate,
+      ),
       iconTheme: const IconThemeData(color: _slate),
     ),
-    dividerTheme: const DividerThemeData(color: Color(0xFFE0DBD4), thickness: 1),
+    dividerTheme: const DividerThemeData(
+      color: Color(0xFFE0DBD4),
+      thickness: 1,
+    ),
   );
 }

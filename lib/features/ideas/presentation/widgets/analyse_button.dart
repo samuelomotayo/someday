@@ -25,7 +25,10 @@ class AnalyseButton extends ConsumerWidget {
                 key: Key('analyse_button_loading'),
                 height: 22,
                 width: 22,
-                child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: Colors.white,
+                ),
               )
             : Text(
                 key: const Key('analyse_button_label'),

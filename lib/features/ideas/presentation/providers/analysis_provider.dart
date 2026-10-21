@@ -60,12 +60,13 @@ final class AnalysisError extends AnalysisState {
 
 extension AnalysisStateVerdict on AnalysisState {
   VerdictType get verdictType => switch (this) {
-        AnalysisIdle() || AnalysisLoading() || AnalysisError() =>
-          VerdictType.notYetAnalysed,
-        SecondChanceDetected() => VerdictType.secondChance,
-        SunsetConfirmed() => VerdictType.sunsetConfirmed,
-        NeedsMoreContext() => VerdictType.needsMoreContext,
-      };
+    AnalysisIdle() ||
+    AnalysisLoading() ||
+    AnalysisError() => VerdictType.notYetAnalysed,
+    SecondChanceDetected() => VerdictType.secondChance,
+    SunsetConfirmed() => VerdictType.sunsetConfirmed,
+    NeedsMoreContext() => VerdictType.needsMoreContext,
+  };
 }
 
 // ---------------------------------------------------------------------------

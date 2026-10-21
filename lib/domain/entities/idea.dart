@@ -30,13 +30,20 @@ class Idea {
   List<String> validate() {
     final errors = <String>[];
     if (title.trim().isEmpty) errors.add('Title is required.');
-    if (title.length > titleMaxLength) errors.add('Title must be $titleMaxLength characters or fewer.');
+    if (title.length > titleMaxLength) {
+      errors.add('Title must be $titleMaxLength characters or fewer.');
+    }
     if (description.trim().isEmpty) errors.add('Description is required.');
     if (description.length > descriptionMaxLength) {
-      errors.add('Description must be $descriptionMaxLength characters or fewer.');
+      errors.add(
+        'Description must be $descriptionMaxLength characters or fewer.',
+      );
     }
-    if (emotionalNote != null && emotionalNote!.length > emotionalNoteMaxLength) {
-      errors.add('Emotional note must be $emotionalNoteMaxLength characters or fewer.');
+    if (emotionalNote != null &&
+        emotionalNote!.length > emotionalNoteMaxLength) {
+      errors.add(
+        'Emotional note must be $emotionalNoteMaxLength characters or fewer.',
+      );
     }
     return errors;
   }

@@ -6,7 +6,8 @@ import 'package:someday/domain/entities/idea.dart';
 import 'package:someday/features/ideas/presentation/providers/analysis_provider.dart';
 
 class ResurrectionRepository {
-  ResurrectionRepository({http.Client? client}) : _client = client ?? http.Client();
+  ResurrectionRepository({http.Client? client})
+    : _client = client ?? http.Client();
 
   final http.Client _client;
 
@@ -21,7 +22,8 @@ class ResurrectionRepository {
       'title': idea.title,
       'description': idea.description,
       if (idea.timePeriod != null) 'timePeriod': idea.timePeriod,
-      if (idea.reasonForStopping != null) 'reasonForStopping': idea.reasonForStopping,
+      if (idea.reasonForStopping != null)
+        'reasonForStopping': idea.reasonForStopping,
       if (idea.emotionalNote != null) 'emotionalNote': idea.emotionalNote,
     };
 
@@ -40,7 +42,9 @@ class ResurrectionRepository {
     }
 
     if (response.statusCode != 200) {
-      return AnalysisError('Server error ${response.statusCode}. Please try again.');
+      return AnalysisError(
+        'Server error ${response.statusCode}. Please try again.',
+      );
     }
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -48,19 +52,18 @@ class ResurrectionRepository {
 
     return switch (verdict) {
       'second_chance' => SecondChanceDetected(
-          summary: data['summary'] as String? ?? '',
-          signals: List<String>.from(data['signals'] as List? ?? []),
-          confidence: (data['confidence'] as num?)?.toDouble() ?? 0.0,
-        ),
+        summary: data['summary'] as String? ?? '',
+        signals: List<String>.from(data['signals'] as List? ?? []),
+        confidence: (data['confidence'] as num?)?.toDouble() ?? 0.0,
+      ),
       'sunset_confirmed' => SunsetConfirmed(
-          summary: data['summary'] as String? ?? '',
-          reasons: List<String>.from(data['reasons'] as List? ?? []),
-        ),
+        summary: data['summary'] as String? ?? '',
+        reasons: List<String>.from(data['reasons'] as List? ?? []),
+      ),
       'needs_more_context' => NeedsMoreContext(
-          questions: List<String>.from(data['questions'] as List? ?? []),
-        ),
+        questions: List<String>.from(data['questions'] as List? ?? []),
+      ),
       _ => AnalysisError('Unexpected verdict from server.'),
     };
   }
 }
-

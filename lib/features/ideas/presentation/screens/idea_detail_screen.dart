@@ -19,7 +19,8 @@ class IdeaDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ideaAsync = ref.watch(ideaByIdProvider(ideaId));
     return ideaAsync.when(
-      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text('Error: $e')),
@@ -72,7 +73,10 @@ class _IdeaDetailBody extends ConsumerWidget {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: Text('Delete', style: TextStyle(color: Colors.red[700])),
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.red[700]),
+                      ),
                     ),
                   ],
                 ),
@@ -100,12 +104,22 @@ class _IdeaDetailBody extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 20),
-          Text('Idea', style: theme.textTheme.titleSmall?.copyWith(color: const Color(0xFF7A8C7E))),
+          Text(
+            'Idea',
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: const Color(0xFF7A8C7E),
+            ),
+          ),
           const SizedBox(height: 6),
           Text(idea.description, style: theme.textTheme.bodyLarge),
           if (idea.timePeriod != null) ...[
             const SizedBox(height: 20),
-            Text('When', style: theme.textTheme.titleSmall?.copyWith(color: const Color(0xFF7A8C7E))),
+            Text(
+              'When',
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: const Color(0xFF7A8C7E),
+              ),
+            ),
             const SizedBox(height: 6),
             Text(idea.timePeriod!, style: theme.textTheme.bodyLarge),
           ],
@@ -113,7 +127,9 @@ class _IdeaDetailBody extends ConsumerWidget {
             const SizedBox(height: 20),
             Text(
               'Why I stopped',
-              style: theme.textTheme.titleSmall?.copyWith(color: const Color(0xFF7A8C7E)),
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: const Color(0xFF7A8C7E),
+              ),
             ),
             const SizedBox(height: 6),
             Text(idea.reasonForStopping!, style: theme.textTheme.bodyLarge),
@@ -122,7 +138,9 @@ class _IdeaDetailBody extends ConsumerWidget {
             const SizedBox(height: 20),
             Text(
               'How I feel about it',
-              style: theme.textTheme.titleSmall?.copyWith(color: const Color(0xFF7A8C7E)),
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: const Color(0xFF7A8C7E),
+              ),
             ),
             const SizedBox(height: 6),
             Text(idea.emotionalNote!, style: theme.textTheme.bodyLarge),

@@ -6,8 +6,9 @@
 //     resurrectionRepositoryProvider.overrideWith((ref) => MockResurrectionRepository()),
 //   ]);
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 // ── Domain / repository interfaces ──────────────────────────────────────────
 
@@ -71,9 +72,7 @@ ProviderContainer makeContainer({
 ///   // container is auto-disposed at end of test
 /// });
 /// ```
-ProviderContainer createContainer({
-  List<Override> overrides = const [],
-}) {
+ProviderContainer createContainer({List<Override> overrides = const []}) {
   final container = ProviderContainer(overrides: overrides);
   // addTearDown is package:test's global teardown registration.
   addTearDown(container.dispose);
@@ -93,9 +92,6 @@ ProviderContainer createContainer({
 ///   ),
 /// );
 /// ```
-// ignore: always_use_package_imports
-import 'package:flutter/material.dart';
-
 Widget testProviderScope({
   required Widget child,
   List<Override> overrides = const [],

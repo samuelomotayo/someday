@@ -73,10 +73,7 @@ final class SunsetConfirmed extends AnalysisState {
   final List<String> reasons;
   final double confidence;
 
-  const SunsetConfirmed({
-    required this.reasons,
-    this.confidence = 1.0,
-  });
+  const SunsetConfirmed({required this.reasons, this.confidence = 1.0});
 
   @override
   bool operator ==(Object other) =>
@@ -93,10 +90,7 @@ final class NeedsMoreContext extends AnalysisState {
   final List<String> questions;
   final double confidence;
 
-  const NeedsMoreContext({
-    required this.questions,
-    this.confidence = 1.0,
-  });
+  const NeedsMoreContext({required this.questions, this.confidence = 1.0});
 
   @override
   bool operator ==(Object other) =>
@@ -356,13 +350,13 @@ void main() {
     // ── Pattern-matching exhaustiveness ──────────────────────────────────────
     group('exhaustive switch', () {
       String describeState(AnalysisState s) => switch (s) {
-            AnalysisIdle() => 'idle',
-            AnalysisLoading() => 'loading',
-            SecondChanceDetected() => 'second_chance',
-            SunsetConfirmed() => 'sunset',
-            NeedsMoreContext() => 'needs_context',
-            AnalysisError() => 'error',
-          };
+        AnalysisIdle() => 'idle',
+        AnalysisLoading() => 'loading',
+        SecondChanceDetected() => 'second_chance',
+        SunsetConfirmed() => 'sunset',
+        NeedsMoreContext() => 'needs_context',
+        AnalysisError() => 'error',
+      };
 
       test('idle maps to "idle"', () {
         expect(describeState(const AnalysisIdle()), 'idle');
@@ -380,10 +374,7 @@ void main() {
       });
 
       test('SunsetConfirmed maps to "sunset"', () {
-        expect(
-          describeState(const SunsetConfirmed(reasons: [])),
-          'sunset',
-        );
+        expect(describeState(const SunsetConfirmed(reasons: [])), 'sunset');
       });
 
       test('NeedsMoreContext maps to "needs_context"', () {

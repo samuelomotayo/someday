@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class VoiceInputButton extends StatefulWidget {
-  const VoiceInputButton({
-    super.key,
-    required this.onResult,
-    this.size = 48,
-  });
+  const VoiceInputButton({super.key, required this.onResult, this.size = 48});
 
   final ValueChanged<String> onResult;
   final double size;
@@ -30,9 +26,10 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
-    _pulseAnim = Tween(begin: 1.0, end: 1.25).animate(
-      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
-    );
+    _pulseAnim = Tween(
+      begin: 1.0,
+      end: 1.25,
+    ).animate(CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
     _initSpeech();
   }
 
@@ -103,8 +100,9 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
       child: IconButton(
         iconSize: widget.size * 0.5,
         style: IconButton.styleFrom(
-          backgroundColor:
-              _isListening ? const Color(0xFFC97D3A) : const Color(0xFFF0EDE8),
+          backgroundColor: _isListening
+              ? const Color(0xFFC97D3A)
+              : const Color(0xFFF0EDE8),
           fixedSize: Size(widget.size, widget.size),
         ),
         onPressed: _toggleListening,

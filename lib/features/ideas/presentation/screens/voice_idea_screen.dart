@@ -25,9 +25,10 @@ class _VoiceIdeaScreenState extends State<VoiceIdeaScreen>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     );
-    _pulseAnim = Tween(begin: 1.0, end: 1.15).animate(
-      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
-    );
+    _pulseAnim = Tween(
+      begin: 1.0,
+      end: 1.15,
+    ).animate(CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
     _initSpeech();
   }
 
@@ -112,8 +113,11 @@ class _VoiceIdeaScreenState extends State<VoiceIdeaScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayText = _transcript +
-        (_partial.isNotEmpty ? (_transcript.isNotEmpty ? ' ' : '') + _partial : '');
+    final displayText =
+        _transcript +
+        (_partial.isNotEmpty
+            ? (_transcript.isNotEmpty ? ' ' : '') + _partial
+            : '');
 
     return Scaffold(
       appBar: AppBar(
@@ -144,7 +148,9 @@ class _VoiceIdeaScreenState extends State<VoiceIdeaScreen>
                           Icon(
                             Icons.mic_none_rounded,
                             size: 64,
-                            color: const Color(0xFFC97D3A).withValues(alpha: 0.4),
+                            color: const Color(
+                              0xFFC97D3A,
+                            ).withValues(alpha: 0.4),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -210,8 +216,9 @@ class _VoiceIdeaScreenState extends State<VoiceIdeaScreen>
                           boxShadow: _isListening
                               ? [
                                   BoxShadow(
-                                    color: const Color(0xFFC97D3A)
-                                        .withValues(alpha: 0.3),
+                                    color: const Color(
+                                      0xFFC97D3A,
+                                    ).withValues(alpha: 0.3),
                                     blurRadius: 20,
                                     spreadRadius: 4,
                                   ),

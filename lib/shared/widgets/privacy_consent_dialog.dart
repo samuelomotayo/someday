@@ -58,7 +58,9 @@ class _PrivacyConsentDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(
             'Keep Private',
-            style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
+            style: TextStyle(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
           ),
         ),
         FilledButton(

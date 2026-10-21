@@ -6,8 +6,9 @@ import 'package:someday/shared/widgets/verdict_badge.dart';
 import 'package:someday/domain/entities/verdict_type.dart';
 
 void main() {
-  testWidgets('VerdictBadge renders correct label for each verdict type',
-      (WidgetTester tester) async {
+  testWidgets('VerdictBadge renders correct label for each verdict type', (
+    WidgetTester tester,
+  ) async {
     for (final verdict in VerdictType.values) {
       await tester.pumpWidget(
         ProviderScope(

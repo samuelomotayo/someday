@@ -26,9 +26,10 @@ class _VerdictScreenState extends ConsumerState<VerdictScreen>
       duration: const Duration(milliseconds: 1800),
     )..repeat(reverse: true);
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
-      CurvedAnimation(parent: _bloomController, curve: _SpringCurve()),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.08,
+    ).animate(CurvedAnimation(parent: _bloomController, curve: _SpringCurve()));
   }
 
   @override
@@ -49,22 +50,35 @@ class _VerdictScreenState extends ConsumerState<VerdictScreen>
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: switch (state) {
             AnalysisIdle() => _IdleFallback(theme: theme),
-            AnalysisLoading() => const Center(child: CircularProgressIndicator()),
-            AnalysisError(:final message) => _ErrorView(message: message, theme: theme),
-            SecondChanceDetected(:final summary, :final signals, :final confidence) =>
+            AnalysisLoading() => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            AnalysisError(:final message) => _ErrorView(
+              message: message,
+              theme: theme,
+            ),
+            SecondChanceDetected(
+              :final summary,
+              :final signals,
+              :final confidence,
+            ) =>
               _SecondChanceView(
-                state: SecondChanceDetected(summary: summary, signals: signals, confidence: confidence),
+                state: SecondChanceDetected(
+                  summary: summary,
+                  signals: signals,
+                  confidence: confidence,
+                ),
                 scaleAnimation: _scaleAnimation,
                 theme: theme,
               ),
             SunsetConfirmed(:final summary, :final reasons) => _SunsetView(
-                state: SunsetConfirmed(summary: summary, reasons: reasons),
-                theme: theme,
-              ),
+              state: SunsetConfirmed(summary: summary, reasons: reasons),
+              theme: theme,
+            ),
             NeedsMoreContext(:final questions) => _ContextView(
-                state: NeedsMoreContext(questions: questions),
-                theme: theme,
-              ),
+              state: NeedsMoreContext(questions: questions),
+              theme: theme,
+            ),
           },
         ),
       ),
@@ -117,8 +131,8 @@ class _SecondChanceView extends StatelessWidget {
         Text('Signals', style: theme.textTheme.titleMedium),
         const SizedBox(height: 8),
         ...state.signals.asMap().entries.map(
-              (e) => _SignalTile(key: Key('signal_${e.key}'), text: e.value),
-            ),
+          (e) => _SignalTile(key: Key('signal_${e.key}'), text: e.value),
+        ),
       ],
     );
   }
@@ -146,11 +160,14 @@ class _SunsetView extends StatelessWidget {
         const SizedBox(height: 16),
         Text(state.summary, style: theme.textTheme.bodyLarge),
         const SizedBox(height: 24),
-        Text('Why this idea has run its course', style: theme.textTheme.titleMedium),
+        Text(
+          'Why this idea has run its course',
+          style: theme.textTheme.titleMedium,
+        ),
         const SizedBox(height: 8),
         ...state.reasons.asMap().entries.map(
-              (e) => _SignalTile(key: Key('reason_${e.key}'), text: e.value),
-            ),
+          (e) => _SignalTile(key: Key('reason_${e.key}'), text: e.value),
+        ),
       ],
     );
   }
@@ -183,14 +200,14 @@ class _ContextView extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         ...state.questions.asMap().entries.map(
-              (e) => Card(
-                key: Key('context_question_${e.key}'),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(e.value, style: theme.textTheme.bodyLarge),
-                ),
-              ),
+          (e) => Card(
+            key: Key('context_question_${e.key}'),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(e.value, style: theme.textTheme.bodyLarge),
             ),
+          ),
+        ),
       ],
     );
   }
@@ -267,7 +284,9 @@ class _SignalTile extends StatelessWidget {
         children: [
           const Icon(Icons.circle, size: 6, color: Color(0xFFC97D3A)),
           const SizedBox(width: 10),
-          Expanded(child: Text(text, style: Theme.of(context).textTheme.bodyMedium)),
+          Expanded(
+            child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+          ),
         ],
       ),
     );

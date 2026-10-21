@@ -21,8 +21,7 @@ AppDatabase appDatabase(Ref ref) => AppDatabase();
 @riverpod
 Stream<List<domain.Idea>> ideas(Ref ref) {
   final db = ref.watch(appDatabaseProvider);
-  return (db.select(db.ideas)
-        ..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))
+  return (db.select(db.ideas)..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))
       .watch()
       .map((rows) => rows.map(_toIdea).toList());
 }
@@ -51,19 +50,21 @@ class IdeasNotifier extends _$IdeasNotifier {
   AppDatabase get _db => ref.read(appDatabaseProvider);
 
   Future<void> save(domain.Idea idea) async {
-    await _db.into(_db.ideas).insertOnConflictUpdate(
-      IdeasCompanion.insert(
-        id: idea.id,
-        title: idea.title,
-        description: idea.description,
-        createdAt: idea.createdAt,
-        timePeriod: Value(idea.timePeriod),
-        reasonForStopping: Value(idea.reasonForStopping),
-        emotionalNote: Value(idea.emotionalNote),
-        verdict: Value(idea.verdict.name),
-        aiOptIn: Value(idea.aiOptIn),
-      ),
-    );
+    await _db
+        .into(_db.ideas)
+        .insertOnConflictUpdate(
+          IdeasCompanion.insert(
+            id: idea.id,
+            title: idea.title,
+            description: idea.description,
+            createdAt: idea.createdAt,
+            timePeriod: Value(idea.timePeriod),
+            reasonForStopping: Value(idea.reasonForStopping),
+            emotionalNote: Value(idea.emotionalNote),
+            verdict: Value(idea.verdict.name),
+            aiOptIn: Value(idea.aiOptIn),
+          ),
+        );
   }
 
   Future<void> delete(String id) async {
@@ -71,8 +72,9 @@ class IdeasNotifier extends _$IdeasNotifier {
   }
 
   Future<void> updateVerdict(String id, VerdictType verdict) async {
-    await (_db.update(_db.ideas)..where((t) => t.id.equals(id)))
-        .write(IdeasCompanion(verdict: Value(verdict.name)));
+    await (_db.update(_db.ideas)..where((t) => t.id.equals(id))).write(
+      IdeasCompanion(verdict: Value(verdict.name)),
+    );
   }
 }
 
@@ -81,13 +83,13 @@ class IdeasNotifier extends _$IdeasNotifier {
 // ---------------------------------------------------------------------------
 
 domain.Idea _toIdea(IdeaData row) => domain.Idea(
-      id: row.id,
-      title: row.title,
-      description: row.description,
-      createdAt: row.createdAt,
-      timePeriod: row.timePeriod,
-      reasonForStopping: row.reasonForStopping,
-      emotionalNote: row.emotionalNote,
-      verdict: VerdictType.values.byName(row.verdict),
-      aiOptIn: row.aiOptIn,
-    );
+  id: row.id,
+  title: row.title,
+  description: row.description,
+  createdAt: row.createdAt,
+  timePeriod: row.timePeriod,
+  reasonForStopping: row.reasonForStopping,
+  emotionalNote: row.emotionalNote,
+  verdict: VerdictType.values.byName(row.verdict),
+  aiOptIn: row.aiOptIn,
+);

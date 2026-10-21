@@ -31,7 +31,10 @@ class HomeScreen extends ConsumerWidget {
       body: ideasAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
-          child: Text('Error loading ideas: $e', style: theme.textTheme.bodyMedium),
+          child: Text(
+            'Error loading ideas: $e',
+            style: theme.textTheme.bodyMedium,
+          ),
         ),
         data: (ideas) {
           if (ideas.isEmpty) {
@@ -39,13 +42,19 @@ class HomeScreen extends ConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.eco_outlined, size: 64, color: Color(0xFFC97D3A)),
+                  const Icon(
+                    Icons.eco_outlined,
+                    size: 64,
+                    color: Color(0xFFC97D3A),
+                  ),
                   const SizedBox(height: 16),
                   Text('No ideas yet', style: theme.textTheme.headlineSmall),
                   const SizedBox(height: 8),
                   Text(
                     'Tap + to add your first abandoned idea.',
-                    style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFF7A8C7E)),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF7A8C7E),
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -73,7 +82,9 @@ class HomeScreen extends ConsumerWidget {
               final transcript = await Navigator.of(context).push<String>(
                 MaterialPageRoute(builder: (_) => const VoiceIdeaScreen()),
               );
-              if (transcript != null && transcript.isNotEmpty && context.mounted) {
+              if (transcript != null &&
+                  transcript.isNotEmpty &&
+                  context.mounted) {
                 context.push(kRouteNewIdea, extra: transcript);
               }
             },

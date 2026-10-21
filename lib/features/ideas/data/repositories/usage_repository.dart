@@ -5,12 +5,13 @@ class UsageLimitExceededException implements Exception {
   const UsageLimitExceededException();
 
   @override
-  String toString() => 'Free analysis limit of ${AppConfig.freeTierAnalysisLimit} reached.';
+  String toString() =>
+      'Free analysis limit of ${AppConfig.freeTierAnalysisLimit} reached.';
 }
 
 class UsageCountService {
   const UsageCountService({FlutterSecureStorage? storage})
-      : _storage = storage ?? const FlutterSecureStorage();
+    : _storage = storage ?? const FlutterSecureStorage();
 
   final FlutterSecureStorage _storage;
   static const _key = 'someday_analysis_count';

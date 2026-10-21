@@ -74,13 +74,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 32),
-                const Icon(Icons.eco_outlined, size: 56, color: Color(0xFFC97D3A)),
+                const Icon(
+                  Icons.eco_outlined,
+                  size: 56,
+                  color: Color(0xFFC97D3A),
+                ),
                 const SizedBox(height: 24),
                 Text('Someday', style: theme.textTheme.headlineLarge),
                 const SizedBox(height: 8),
                 Text(
                   'Resurrect your abandoned ideas.',
-                  style: theme.textTheme.bodyLarge?.copyWith(color: const Color(0xFF7A8C7E)),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF7A8C7E),
+                  ),
                 ),
                 const SizedBox(height: 48),
                 Text(
@@ -96,7 +102,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     hintText: 'you@example.com',
                   ),
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Email is required';
+                    if (v == null || v.trim().isEmpty) {
+                      return 'Email is required';
+                    }
                     if (!v.contains('@')) return 'Enter a valid email';
                     return null;
                   },
@@ -133,7 +141,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? const SizedBox(
                           height: 22,
                           width: 22,
-                          child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
+                          ),
                         )
                       : Text(_isSignUp ? 'Create account' : 'Sign in'),
                 ),
@@ -142,9 +153,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed: _isLoading
                       ? null
                       : () => setState(() {
-                            _isSignUp = !_isSignUp;
-                            _errorMessage = null;
-                          }),
+                          _isSignUp = !_isSignUp;
+                          _errorMessage = null;
+                        }),
                   child: Text(
                     _isSignUp
                         ? 'Already have an account? Sign in'

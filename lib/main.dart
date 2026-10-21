@@ -44,7 +44,11 @@ class _MissingConfigApp extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.eco_outlined, size: 64, color: Color(0xFFC97D3A)),
+                const Icon(
+                  Icons.eco_outlined,
+                  size: 64,
+                  color: Color(0xFFC97D3A),
+                ),
                 const SizedBox(height: 24),
                 const Text(
                   'Someday',

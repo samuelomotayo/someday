@@ -56,12 +56,15 @@ void main() {
       });
 
       test('all expected variants exist', () {
-        expect(VerdictType.values, containsAll([
-          VerdictType.secondChance,
-          VerdictType.sunsetConfirmed,
-          VerdictType.needsMoreContext,
-          VerdictType.notYetAnalysed,
-        ]));
+        expect(
+          VerdictType.values,
+          containsAll([
+            VerdictType.secondChance,
+            VerdictType.sunsetConfirmed,
+            VerdictType.needsMoreContext,
+            VerdictType.notYetAnalysed,
+          ]),
+        );
       });
     });
 
@@ -131,10 +134,7 @@ void main() {
       });
 
       test('throws for empty string', () {
-        expect(
-          () => VerdictType.fromApiString(''),
-          throwsArgumentError,
-        );
+        expect(() => VerdictType.fromApiString(''), throwsArgumentError);
       });
     });
 

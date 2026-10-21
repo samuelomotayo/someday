@@ -16,7 +16,8 @@ class Ideas extends Table {
   TextColumn get timePeriod => text().nullable()();
   TextColumn get reasonForStopping => text().nullable()();
   TextColumn get emotionalNote => text().nullable()();
-  TextColumn get verdict => text().withDefault(const Constant('notYetAnalysed'))();
+  TextColumn get verdict =>
+      text().withDefault(const Constant('notYetAnalysed'))();
   BoolColumn get aiOptIn => boolean().withDefault(const Constant(false))();
 
   @override

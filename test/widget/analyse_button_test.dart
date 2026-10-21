@@ -17,27 +17,33 @@ import 'package:flutter_test/flutter_test.dart';
 // ---------------------------------------------------------------------------
 // Inline stubs — remove once real imports are added.
 // ---------------------------------------------------------------------------
-sealed class AnalysisState { const AnalysisState(); }
-final class AnalysisIdle    extends AnalysisState { const AnalysisIdle(); }
-final class AnalysisLoading extends AnalysisState { const AnalysisLoading(); }
+sealed class AnalysisState {
+  const AnalysisState();
+}
+
+final class AnalysisIdle extends AnalysisState {
+  const AnalysisIdle();
+}
+
+final class AnalysisLoading extends AnalysisState {
+  const AnalysisLoading();
+}
+
 final class SecondChanceDetected extends AnalysisState {
   const SecondChanceDetected();
 }
 
 /// The provider that the AnalyseButton watches.
-final analysisStateProvider =
-    StateProvider<AnalysisState>((ref) => const AnalysisIdle());
+final analysisStateProvider = StateProvider<AnalysisState>(
+  (ref) => const AnalysisIdle(),
+);
 
 /// The button widget under test.
 class AnalyseButton extends ConsumerWidget {
   final VoidCallback? onPressed;
   final String label;
 
-  const AnalyseButton({
-    super.key,
-    this.onPressed,
-    this.label = 'Analyse Idea',
-  });
+  const AnalyseButton({super.key, this.onPressed, this.label = 'Analyse Idea'});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,10 +64,7 @@ class AnalyseButton extends ConsumerWidget {
                 color: Colors.white,
               ),
             )
-          : Text(
-              label,
-              key: const Key('analyse_button_label'),
-            ),
+          : Text(label, key: const Key('analyse_button_label')),
     );
   }
 }
@@ -75,9 +78,7 @@ Widget _pumpButton({
   String label = 'Analyse Idea',
 }) {
   return ProviderScope(
-    overrides: [
-      analysisStateProvider.overrideWith((ref) => initialState),
-    ],
+    overrides: [analysisStateProvider.overrideWith((ref) => initialState)],
     child: MaterialApp(
       home: Scaffold(
         body: Center(
@@ -106,8 +107,9 @@ void main() {
         expect(find.byType(CircularProgressIndicator), findsNothing);
       });
 
-      testWidgets('button is enabled (onPressed is not null) in idle state',
-          (tester) async {
+      testWidgets('button is enabled (onPressed is not null) in idle state', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpButton(onPressed: () {}));
         final button = _findButton(tester);
         expect(button.onPressed, isNotNull);
@@ -124,24 +126,21 @@ void main() {
       });
 
       testWidgets('custom label is displayed', (tester) async {
-        await tester.pumpWidget(
-          _pumpButton(label: 'Re-analyse Idea'),
-        );
+        await tester.pumpWidget(_pumpButton(label: 'Re-analyse Idea'));
         expect(find.text('Re-analyse Idea'), findsOneWidget);
       });
     });
 
     // ── Loading state ─────────────────────────────────────────────────────────
     group('AnalysisLoading state', () {
-      testWidgets('shows CircularProgressIndicator when loading', (tester) async {
+      testWidgets('shows CircularProgressIndicator when loading', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           _pumpButton(initialState: const AnalysisLoading()),
         );
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
-        expect(
-          find.byKey(const Key('analyse_button_spinner')),
-          findsOneWidget,
-        );
+        expect(find.byKey(const Key('analyse_button_spinner')), findsOneWidget);
       });
 
       testWidgets('does NOT show label text when loading', (tester) async {
@@ -152,25 +151,27 @@ void main() {
         expect(find.byKey(const Key('analyse_button_label')), findsNothing);
       });
 
-      testWidgets('button is disabled (onPressed is null) when loading',
-          (tester) async {
-        var pressed = false;
-        await tester.pumpWidget(_pumpButton(
-          initialState: const AnalysisLoading(),
-          onPressed: () => pressed = true,
-        ));
+      testWidgets('button is disabled (onPressed is null) when loading', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          _pumpButton(initialState: const AnalysisLoading(), onPressed: () {}),
+        );
 
         final button = _findButton(tester);
         expect(button.onPressed, isNull);
       });
 
-      testWidgets('tapping disabled button does not invoke callback',
-          (tester) async {
+      testWidgets('tapping disabled button does not invoke callback', (
+        tester,
+      ) async {
         var pressed = false;
-        await tester.pumpWidget(_pumpButton(
-          initialState: const AnalysisLoading(),
-          onPressed: () => pressed = true,
-        ));
+        await tester.pumpWidget(
+          _pumpButton(
+            initialState: const AnalysisLoading(),
+            onPressed: () => pressed = true,
+          ),
+        );
 
         await tester.tap(
           find.byKey(const Key('analyse_button')),
@@ -184,23 +185,26 @@ void main() {
 
     // ── State transitions ─────────────────────────────────────────────────────
     group('state transitions via provider', () {
-      testWidgets('transitions from idle to loading when provider updates',
-          (tester) async {
-        final stateController = StateController<AnalysisState>(const AnalysisIdle());
+      testWidgets('transitions from idle to loading when provider updates', (
+        tester,
+      ) async {
+        final stateController = StateController<AnalysisState>(
+          const AnalysisIdle(),
+        );
 
         // ignore: deprecated_member_use
-        await tester.pumpWidget(ProviderScope(
-          overrides: [
-            analysisStateProvider.overrideWith((_) => stateController.state),
-          ],
-          child: MaterialApp(
-            home: Scaffold(
-              body: Center(
-                child: AnalyseButton(onPressed: () {}),
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              analysisStateProvider.overrideWith((_) => stateController.state),
+            ],
+            child: MaterialApp(
+              home: Scaffold(
+                body: Center(child: AnalyseButton(onPressed: () {})),
               ),
             ),
           ),
-        ));
+        );
 
         // Initially: label visible, no spinner.
         expect(find.text('Analyse Idea'), findsOneWidget);
@@ -209,9 +213,14 @@ void main() {
         // After transition to loading — re-pump with overridden state.
         // Since we can't mutate the override at runtime in this minimal stub,
         // we re-pump with a new widget tree reflecting the loading state.
-        await tester.pumpWidget(_pumpButton(
-          initialState: const AnalysisLoading(),
-        ));
+        // A full teardown pump is required first: otherwise Flutter reuses
+        // the existing ProviderScope element (same widget type/position) and
+        // keeps its original ProviderContainer instead of rebuilding with the
+        // new override.
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pumpWidget(
+          _pumpButton(initialState: const AnalysisLoading()),
+        );
 
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
         expect(find.text('Analyse Idea'), findsNothing);
@@ -222,14 +231,25 @@ void main() {
     group('accessibility', () {
       testWidgets('button has a semantic label in idle state', (tester) async {
         await tester.pumpWidget(_pumpButton(onPressed: () {}));
-        // The text widget inside ElevatedButton provides semantics automatically.
+        // The text label's semantics merge with the enclosing ElevatedButton,
+        // so the node also carries the button's own flags/actions.
         expect(
           tester.getSemantics(find.text('Analyse Idea')),
-          matchesSemantics(label: 'Analyse Idea'),
+          matchesSemantics(
+            label: 'Analyse Idea',
+            isButton: true,
+            hasEnabledState: true,
+            isEnabled: true,
+            isFocusable: true,
+            hasTapAction: true,
+            hasFocusAction: true,
+          ),
         );
       });
 
-      testWidgets('meets tap-target size requirement (>= 48x48)', (tester) async {
+      testWidgets('meets tap-target size requirement (>= 48x48)', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpButton(onPressed: () {}));
         final size = tester.getSize(find.byKey(const Key('analyse_button')));
         expect(size.height, greaterThanOrEqualTo(48.0));

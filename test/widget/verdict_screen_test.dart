@@ -17,9 +17,17 @@ import 'package:flutter_test/flutter_test.dart';
 // ---------------------------------------------------------------------------
 // Inline sealed class (mirrors analysis_state_test.dart)
 // ---------------------------------------------------------------------------
-sealed class AnalysisState { const AnalysisState(); }
-final class AnalysisIdle extends AnalysisState { const AnalysisIdle(); }
-final class AnalysisLoading extends AnalysisState { const AnalysisLoading(); }
+sealed class AnalysisState {
+  const AnalysisState();
+}
+
+final class AnalysisIdle extends AnalysisState {
+  const AnalysisIdle();
+}
+
+final class AnalysisLoading extends AnalysisState {
+  const AnalysisLoading();
+}
 
 final class SecondChanceDetected extends AnalysisState {
   final List<String> signals;
@@ -35,13 +43,13 @@ final class SecondChanceDetected extends AnalysisState {
 final class SunsetConfirmed extends AnalysisState {
   final List<String> reasons;
   final double confidence;
-  const SunsetConfirmed({ required this.reasons, this.confidence = 1.0 });
+  const SunsetConfirmed({required this.reasons, this.confidence = 1.0});
 }
 
 final class NeedsMoreContext extends AnalysisState {
   final List<String> questions;
   final double confidence;
-  const NeedsMoreContext({ required this.questions, this.confidence = 1.0 });
+  const NeedsMoreContext({required this.questions, this.confidence = 1.0});
 }
 
 final class AnalysisError extends AnalysisState {
@@ -50,8 +58,9 @@ final class AnalysisError extends AnalysisState {
 }
 
 // ── Provider ─────────────────────────────────────────────────────────────────
-final analysisStateProvider =
-    StateProvider<AnalysisState>((ref) => const AnalysisIdle());
+final analysisStateProvider = StateProvider<AnalysisState>(
+  (ref) => const AnalysisIdle(),
+);
 
 // ---------------------------------------------------------------------------
 // Inline VerdictScreen widget
@@ -69,25 +78,29 @@ class VerdictScreen extends ConsumerWidget {
         title: const Text('Verdict', key: Key('verdict_screen_title')),
       ),
       body: switch (state) {
-        AnalysisIdle()    => const Center(child: Text('No verdict yet')),
+        AnalysisIdle() => const Center(child: Text('No verdict yet')),
         AnalysisLoading() => const Center(child: CircularProgressIndicator()),
-        SecondChanceDetected(:final signals, :final nextSteps, :final confidence) =>
+        SecondChanceDetected(
+          :final signals,
+          :final nextSteps,
+          :final confidence,
+        ) =>
           _SecondChanceView(
             signals: signals,
             nextSteps: nextSteps,
             confidence: confidence,
           ),
         SunsetConfirmed(:final reasons, :final confidence) => _SunsetView(
-            reasons: reasons,
-            confidence: confidence,
-          ),
+          reasons: reasons,
+          confidence: confidence,
+        ),
         NeedsMoreContext(:final questions) => _NeedsContextView(
-            questions: questions,
-          ),
+          questions: questions,
+        ),
         AnalysisError(:final message) => Center(
-            key: const Key('verdict_error'),
-            child: Text('Error: $message'),
-          ),
+          key: const Key('verdict_error'),
+          child: Text('Error: $message'),
+        ),
       },
     );
   }
@@ -121,21 +134,31 @@ class _SecondChanceView extends StatelessWidget {
             key: const Key('second_chance_confidence'),
           ),
           const SizedBox(height: 16),
-          const Text('Why now?', key: Key('signals_section_title'),
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          ...signals.map((s) => ListTile(
-                key: Key('signal_$s'),
-                leading: const Icon(Icons.check_circle, color: Colors.green),
-                title: Text(s),
-              )),
+          const Text(
+            'Why now?',
+            key: Key('signals_section_title'),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          ...signals.map(
+            (s) => ListTile(
+              key: Key('signal_$s'),
+              leading: const Icon(Icons.check_circle, color: Colors.green),
+              title: Text(s),
+            ),
+          ),
           const SizedBox(height: 16),
-          const Text('Next Steps', key: Key('next_steps_section_title'),
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          ...nextSteps.asMap().entries.map((e) => ListTile(
-                key: Key('next_step_${e.key}'),
-                leading: CircleAvatar(child: Text('${e.key + 1}')),
-                title: Text(e.value),
-              )),
+          const Text(
+            'Next Steps',
+            key: Key('next_steps_section_title'),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          ...nextSteps.asMap().entries.map(
+            (e) => ListTile(
+              key: Key('next_step_${e.key}'),
+              leading: CircleAvatar(child: Text('${e.key + 1}')),
+              title: Text(e.value),
+            ),
+          ),
         ],
       ),
     );
@@ -145,7 +168,7 @@ class _SecondChanceView extends StatelessWidget {
 class _SunsetView extends StatelessWidget {
   final List<String> reasons;
   final double confidence;
-  const _SunsetView({ required this.reasons, required this.confidence });
+  const _SunsetView({required this.reasons, required this.confidence});
 
   @override
   Widget build(BuildContext context) {
@@ -165,13 +188,18 @@ class _SunsetView extends StatelessWidget {
             key: const Key('sunset_confidence'),
           ),
           const SizedBox(height: 16),
-          const Text('Why let it go?', key: Key('reasons_section_title'),
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          ...reasons.map((r) => ListTile(
-                key: Key('reason_$r'),
-                leading: const Icon(Icons.cancel, color: Colors.red),
-                title: Text(r),
-              )),
+          const Text(
+            'Why let it go?',
+            key: Key('reasons_section_title'),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          ...reasons.map(
+            (r) => ListTile(
+              key: Key('reason_$r'),
+              leading: const Icon(Icons.cancel, color: Colors.red),
+              title: Text(r),
+            ),
+          ),
         ],
       ),
     );
@@ -180,7 +208,7 @@ class _SunsetView extends StatelessWidget {
 
 class _NeedsContextView extends StatelessWidget {
   final List<String> questions;
-  const _NeedsContextView({ required this.questions });
+  const _NeedsContextView({required this.questions});
 
   @override
   Widget build(BuildContext context) {
@@ -201,13 +229,15 @@ class _NeedsContextView extends StatelessWidget {
             key: Key('needs_context_subheading'),
           ),
           const SizedBox(height: 16),
-          ...questions.asMap().entries.map((e) => Card(
-                key: Key('question_card_${e.key}'),
-                child: ListTile(
-                  leading: CircleAvatar(child: Text('${e.key + 1}')),
-                  title: Text(e.value, key: Key('question_text_${e.key}')),
-                ),
-              )),
+          ...questions.asMap().entries.map(
+            (e) => Card(
+              key: Key('question_card_${e.key}'),
+              child: ListTile(
+                leading: CircleAvatar(child: Text('${e.key + 1}')),
+                title: Text(e.value, key: Key('question_text_${e.key}')),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -219,12 +249,8 @@ class _NeedsContextView extends StatelessWidget {
 
 Widget _pumpScreen(AnalysisState state) {
   return ProviderScope(
-    overrides: [
-      analysisStateProvider.overrideWith((_) => state),
-    ],
-    child: const MaterialApp(
-      home: VerdictScreen(ideaId: 'idea-test-001'),
-    ),
+    overrides: [analysisStateProvider.overrideWith((_) => state)],
+    child: const MaterialApp(home: VerdictScreen(ideaId: 'idea-test-001')),
   );
 }
 
@@ -254,7 +280,10 @@ void main() {
       testWidgets('shows confidence percentage', (tester) async {
         await tester.pumpWidget(_pumpScreen(state));
         await tester.pumpAndSettle();
-        expect(find.byKey(const Key('second_chance_confidence')), findsOneWidget);
+        expect(
+          find.byKey(const Key('second_chance_confidence')),
+          findsOneWidget,
+        );
         expect(find.text('Confidence: 85%'), findsOneWidget);
       });
 
@@ -282,25 +311,36 @@ void main() {
       testWidgets('shows "Next Steps" section title', (tester) async {
         await tester.pumpWidget(_pumpScreen(state));
         await tester.pumpAndSettle();
-        expect(find.byKey(const Key('next_steps_section_title')), findsOneWidget);
+        expect(
+          find.byKey(const Key('next_steps_section_title')),
+          findsOneWidget,
+        );
       });
 
-      testWidgets('does NOT show Sunset or NeedsContext elements', (tester) async {
+      testWidgets('does NOT show Sunset or NeedsContext elements', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpScreen(state));
         await tester.pumpAndSettle();
         expect(find.byKey(const Key('sunset_view')), findsNothing);
         expect(find.byKey(const Key('needs_context_view')), findsNothing);
       });
 
-      testWidgets('shows the correct number of signal ListTiles', (tester) async {
+      testWidgets('shows the correct number of signal ListTiles', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpScreen(state));
         await tester.pumpAndSettle();
         // 2 signals + 2 next-steps = 4 ListTiles total, but we can also count
         // by key prefix.
-        expect(find.byKey(const Key('signal_Market timing has improved')),
-            findsOneWidget);
-        expect(find.byKey(const Key('signal_A competitor proved the demand')),
-            findsOneWidget);
+        expect(
+          find.byKey(const Key('signal_Market timing has improved')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('signal_A competitor proved the demand')),
+          findsOneWidget,
+        );
       });
     });
 
@@ -341,14 +381,12 @@ void main() {
           find.text('Market is dominated by well-funded incumbents'),
           findsOneWidget,
         );
-        expect(
-          find.text('Core assumption proved invalid'),
-          findsOneWidget,
-        );
+        expect(find.text('Core assumption proved invalid'), findsOneWidget);
       });
 
-      testWidgets('does NOT show SecondChance or NeedsContext elements',
-          (tester) async {
+      testWidgets('does NOT show SecondChance or NeedsContext elements', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpScreen(state));
         await tester.pumpAndSettle();
         expect(find.byKey(const Key('second_chance_view')), findsNothing);
@@ -408,7 +446,9 @@ void main() {
         );
       });
 
-      testWidgets('does NOT show SecondChance or Sunset elements', (tester) async {
+      testWidgets('does NOT show SecondChance or Sunset elements', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpScreen(state));
         await tester.pumpAndSettle();
         expect(find.byKey(const Key('second_chance_view')), findsNothing);
@@ -431,7 +471,9 @@ void main() {
 
     // ── Guard states ──────────────────────────────────────────────────────────
     group('guard states', () {
-      testWidgets('shows loading indicator for AnalysisLoading', (tester) async {
+      testWidgets('shows loading indicator for AnalysisLoading', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpScreen(const AnalysisLoading()));
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
       });

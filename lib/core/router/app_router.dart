@@ -46,28 +46,31 @@ GoRouter buildRouter() {
         routes: [
           GoRoute(
             path: 'idea/new',
-            builder: (_, state) => NewIdeaScreen(
-              initialDescription: state.extra as String?,
-            ),
+            builder: (_, state) =>
+                NewIdeaScreen(initialDescription: state.extra as String?),
           ),
         ],
       ),
       GoRoute(
         path: kRouteIdea,
-        builder: (_, state) => IdeaDetailScreen(ideaId: state.pathParameters['id']!),
+        builder: (_, state) =>
+            IdeaDetailScreen(ideaId: state.pathParameters['id']!),
         routes: [
           GoRoute(
             path: 'edit',
-            builder: (_, state) => EditIdeaScreen(ideaId: state.pathParameters['id']!),
+            builder: (_, state) =>
+                EditIdeaScreen(ideaId: state.pathParameters['id']!),
           ),
           GoRoute(
             path: 'verdict',
-            builder: (_, state) => VerdictScreen(ideaId: state.pathParameters['id']!),
+            builder: (_, state) =>
+                VerdictScreen(ideaId: state.pathParameters['id']!),
           ),
           GoRoute(
             path: 'context',
-            builder: (_, state) =>
-                _PlaceholderScreen(label: 'Context ${state.pathParameters['id']}'),
+            builder: (_, state) => _PlaceholderScreen(
+              label: 'Context ${state.pathParameters['id']}',
+            ),
           ),
         ],
       ),

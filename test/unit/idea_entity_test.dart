@@ -15,10 +15,7 @@ class IdeaValidationResult {
   final bool isValid;
   final Map<String, String> errors; // field → error message
 
-  const IdeaValidationResult({
-    required this.isValid,
-    required this.errors,
-  });
+  const IdeaValidationResult({required this.isValid, required this.errors});
 }
 
 class Idea {
@@ -29,7 +26,7 @@ class Idea {
   final String? id;
   final String title;
   final String description;
-  final String? timePeriod;        // e.g. "2019-2020"
+  final String? timePeriod; // e.g. "2019-2020"
   final String? reasonForStopping;
   final String? emotionalNote;
   final DateTime createdAt;
@@ -61,15 +58,13 @@ class Idea {
           'Description must be $maxDescriptionLength characters or fewer';
     }
 
-    if (emotionalNote != null && emotionalNote!.length > maxEmotionalNoteLength) {
+    if (emotionalNote != null &&
+        emotionalNote!.length > maxEmotionalNoteLength) {
       errors['emotionalNote'] =
           'Emotional note must be $maxEmotionalNoteLength characters or fewer';
     }
 
-    return IdeaValidationResult(
-      isValid: errors.isEmpty,
-      errors: errors,
-    );
+    return IdeaValidationResult(isValid: errors.isEmpty, errors: errors);
   }
 
   Idea copyWith({
@@ -140,7 +135,10 @@ void main() {
         final title = 'A' * (Idea.maxTitleLength + 1);
         final result = _validIdea(title: title).validate();
         expect(result.isValid, isFalse);
-        expect(result.errors['title'], contains(Idea.maxTitleLength.toString()));
+        expect(
+          result.errors['title'],
+          contains(Idea.maxTitleLength.toString()),
+        );
       });
 
       test('title 200 chars over limit fails', () {

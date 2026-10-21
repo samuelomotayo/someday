@@ -120,15 +120,17 @@ void main() {
       });
 
       test('returns false when count equals free-tier limit (3)', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit);
+        when(
+          () => mockStorage.getInt(any()),
+        ).thenAnswer((_) async => UsageCountService.freeTierLimit);
 
         expect(await service.canAnalyse(), isFalse);
       });
 
       test('returns false when count exceeds free-tier limit', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit + 5);
+        when(
+          () => mockStorage.getInt(any()),
+        ).thenAnswer((_) async => UsageCountService.freeTierLimit + 5);
 
         expect(await service.canAnalyse(), isFalse);
       });
@@ -162,20 +164,25 @@ void main() {
         verify(() => mockStorage.setInt('usage_analysis_count', 3)).called(1);
       });
 
-      test('throws UsageLimitExceededException when count is at limit', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit);
+      test(
+        'throws UsageLimitExceededException when count is at limit',
+        () async {
+          when(
+            () => mockStorage.getInt(any()),
+          ).thenAnswer((_) async => UsageCountService.freeTierLimit);
 
-        expect(
-          () => service.increment(),
-          throwsA(isA<UsageLimitExceededException>()),
-        );
-        verifyNever(() => mockStorage.setInt(any(), any()));
-      });
+          expect(
+            () => service.increment(),
+            throwsA(isA<UsageLimitExceededException>()),
+          );
+          verifyNever(() => mockStorage.setInt(any(), any()));
+        },
+      );
 
       test('throws when count is already over limit', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit + 1);
+        when(
+          () => mockStorage.getInt(any()),
+        ).thenAnswer((_) async => UsageCountService.freeTierLimit + 1);
 
         expect(
           () => service.increment(),
@@ -184,8 +191,9 @@ void main() {
       });
 
       test('exception message mentions free-tier limit', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit);
+        when(
+          () => mockStorage.getInt(any()),
+        ).thenAnswer((_) async => UsageCountService.freeTierLimit);
 
         try {
           await service.increment();
@@ -236,15 +244,17 @@ void main() {
       });
 
       test('returns 0 when count equals limit', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit);
+        when(
+          () => mockStorage.getInt(any()),
+        ).thenAnswer((_) async => UsageCountService.freeTierLimit);
 
         expect(await service.remaining(), 0);
       });
 
       test('returns 0 (not negative) when count is over limit', () async {
-        when(() => mockStorage.getInt(any()))
-            .thenAnswer((_) async => UsageCountService.freeTierLimit + 10);
+        when(
+          () => mockStorage.getInt(any()),
+        ).thenAnswer((_) async => UsageCountService.freeTierLimit + 10);
 
         expect(await service.remaining(), 0);
       });

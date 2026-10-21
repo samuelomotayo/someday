@@ -22,20 +22,24 @@ enum VerdictType {
 
   String get label {
     switch (this) {
-      case VerdictType.secondChance:      return 'Second Chance';
-      case VerdictType.sunsetConfirmed:   return 'Sunset Confirmed';
-      case VerdictType.needsMoreContext:  return 'Needs More Context';
-      case VerdictType.notYetAnalysed:    return 'Not Yet Analysed';
+      case VerdictType.secondChance:
+        return 'Second Chance';
+      case VerdictType.sunsetConfirmed:
+        return 'Sunset Confirmed';
+      case VerdictType.needsMoreContext:
+        return 'Needs More Context';
+      case VerdictType.notYetAnalysed:
+        return 'Not Yet Analysed';
     }
   }
 }
 
 // ── Colour tokens — replace with your actual theme values ─────────────────
 class _VerdictColors {
-  static const secondChance     = Color(0xFF4CAF50); // green
-  static const sunsetConfirmed  = Color(0xFFF44336); // red
+  static const secondChance = Color(0xFF4CAF50); // green
+  static const sunsetConfirmed = Color(0xFFF44336); // red
   static const needsMoreContext = Color(0xFFFF9800); // amber
-  static const notYetAnalysed   = Color(0xFF9E9E9E); // grey
+  static const notYetAnalysed = Color(0xFF9E9E9E); // grey
 }
 
 // ---------------------------------------------------------------------------
@@ -48,10 +52,14 @@ class VerdictBadge extends StatelessWidget {
 
   Color get _backgroundColor {
     switch (verdict) {
-      case VerdictType.secondChance:      return _VerdictColors.secondChance;
-      case VerdictType.sunsetConfirmed:   return _VerdictColors.sunsetConfirmed;
-      case VerdictType.needsMoreContext:  return _VerdictColors.needsMoreContext;
-      case VerdictType.notYetAnalysed:    return _VerdictColors.notYetAnalysed;
+      case VerdictType.secondChance:
+        return _VerdictColors.secondChance;
+      case VerdictType.sunsetConfirmed:
+        return _VerdictColors.sunsetConfirmed;
+      case VerdictType.needsMoreContext:
+        return _VerdictColors.needsMoreContext;
+      case VerdictType.notYetAnalysed:
+        return _VerdictColors.notYetAnalysed;
     }
   }
 
@@ -95,8 +103,9 @@ void main() {
         expect(_chipColor(tester), _VerdictColors.secondChance);
       });
 
-      testWidgets('has testability key "verdict_badge_secondChance"',
-          (tester) async {
+      testWidgets('has testability key "verdict_badge_secondChance"', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pump(VerdictType.secondChance));
         expect(
           find.byKey(const Key('verdict_badge_secondChance')),
@@ -117,8 +126,9 @@ void main() {
         expect(_chipColor(tester), _VerdictColors.sunsetConfirmed);
       });
 
-      testWidgets('has testability key "verdict_badge_sunsetConfirmed"',
-          (tester) async {
+      testWidgets('has testability key "verdict_badge_sunsetConfirmed"', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pump(VerdictType.sunsetConfirmed));
         expect(
           find.byKey(const Key('verdict_badge_sunsetConfirmed')),
@@ -139,8 +149,9 @@ void main() {
         expect(_chipColor(tester), _VerdictColors.needsMoreContext);
       });
 
-      testWidgets('has testability key "verdict_badge_needsMoreContext"',
-          (tester) async {
+      testWidgets('has testability key "verdict_badge_needsMoreContext"', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pump(VerdictType.needsMoreContext));
         expect(
           find.byKey(const Key('verdict_badge_needsMoreContext')),

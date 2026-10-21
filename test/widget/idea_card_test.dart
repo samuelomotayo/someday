@@ -20,14 +20,21 @@ import 'package:intl/intl.dart';
 // Inline stubs — remove once real imports are in place.
 // ---------------------------------------------------------------------------
 enum VerdictType {
-  secondChance, sunsetConfirmed, needsMoreContext, notYetAnalysed;
+  secondChance,
+  sunsetConfirmed,
+  needsMoreContext,
+  notYetAnalysed;
 
   String get label {
     switch (this) {
-      case VerdictType.secondChance:     return 'Second Chance';
-      case VerdictType.sunsetConfirmed:  return 'Sunset Confirmed';
-      case VerdictType.needsMoreContext: return 'Needs More Context';
-      case VerdictType.notYetAnalysed:   return 'Not Yet Analysed';
+      case VerdictType.secondChance:
+        return 'Second Chance';
+      case VerdictType.sunsetConfirmed:
+        return 'Sunset Confirmed';
+      case VerdictType.needsMoreContext:
+        return 'Needs More Context';
+      case VerdictType.notYetAnalysed:
+        return 'Not Yet Analysed';
     }
   }
 }
@@ -54,23 +61,28 @@ class VerdictBadge extends StatelessWidget {
 
   Color get _color {
     switch (verdict) {
-      case VerdictType.secondChance:     return const Color(0xFF4CAF50);
-      case VerdictType.sunsetConfirmed:  return const Color(0xFFF44336);
-      case VerdictType.needsMoreContext: return const Color(0xFFFF9800);
-      case VerdictType.notYetAnalysed:   return const Color(0xFF9E9E9E);
+      case VerdictType.secondChance:
+        return const Color(0xFF4CAF50);
+      case VerdictType.sunsetConfirmed:
+        return const Color(0xFFF44336);
+      case VerdictType.needsMoreContext:
+        return const Color(0xFFFF9800);
+      case VerdictType.notYetAnalysed:
+        return const Color(0xFF9E9E9E);
     }
   }
 
   @override
   Widget build(BuildContext context) => Chip(
-        key: Key('verdict_badge_${verdict.name}'),
-        label: Text(verdict.label),
-        backgroundColor: _color,
-      );
+    key: Key('verdict_badge_${verdict.name}'),
+    label: Text(verdict.label),
+    backgroundColor: _color,
+  );
 }
 
 class IdeaCard extends StatelessWidget {
   final IdeaModel idea;
+
   /// Called when the card is tapped. In production this calls context.push('/idea/:id').
   final VoidCallback? onTap;
 
@@ -102,10 +114,7 @@ final _baseIdea = IdeaModel(
   verdict: VerdictType.notYetAnalysed,
 );
 
-Widget _pumpCard(
-  IdeaModel idea, {
-  VoidCallback? onTap,
-}) {
+Widget _pumpCard(IdeaModel idea, {VoidCallback? onTap}) {
   return MaterialApp(
     home: Scaffold(
       body: IdeaCard(idea: idea, onTap: onTap),
@@ -140,8 +149,9 @@ void main() {
         expect(find.byKey(const Key('idea_card_date')), findsOneWidget);
       });
 
-      testWidgets('correctly formats single-digit day without zero-padding',
-          (tester) async {
+      testWidgets('correctly formats single-digit day without zero-padding', (
+        tester,
+      ) async {
         final idea = IdeaModel(
           id: 'x',
           title: 'Test',
@@ -171,8 +181,9 @@ void main() {
         expect(find.byType(VerdictBadge), findsOneWidget);
       });
 
-      testWidgets('VerdictBadge reflects notYetAnalysed by default',
-          (tester) async {
+      testWidgets('VerdictBadge reflects notYetAnalysed by default', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpCard(_baseIdea));
         expect(
           find.byKey(const Key('verdict_badge_notYetAnalysed')),
@@ -181,8 +192,9 @@ void main() {
         expect(find.text('Not Yet Analysed'), findsOneWidget);
       });
 
-      testWidgets('VerdictBadge reflects secondChance when set',
-          (tester) async {
+      testWidgets('VerdictBadge reflects secondChance when set', (
+        tester,
+      ) async {
         final idea = IdeaModel(
           id: 'z',
           title: 'Hot idea',
@@ -198,15 +210,17 @@ void main() {
         );
       });
 
-      testWidgets('VerdictBadge reflects sunsetConfirmed when set',
-          (tester) async {
+      testWidgets('VerdictBadge reflects sunsetConfirmed when set', (
+        tester,
+      ) async {
         final idea = _baseIdea.copyWith(verdict: VerdictType.sunsetConfirmed);
         await tester.pumpWidget(_pumpCard(idea));
         expect(find.text('Sunset Confirmed'), findsOneWidget);
       });
 
-      testWidgets('VerdictBadge reflects needsMoreContext when set',
-          (tester) async {
+      testWidgets('VerdictBadge reflects needsMoreContext when set', (
+        tester,
+      ) async {
         final idea = _baseIdea.copyWith(verdict: VerdictType.needsMoreContext);
         await tester.pumpWidget(_pumpCard(idea));
         expect(find.text('Needs More Context'), findsOneWidget);
@@ -217,9 +231,14 @@ void main() {
     group('tap behaviour', () {
       testWidgets('calls onTap callback when tapped', (tester) async {
         var tapped = false;
-        await tester.pumpWidget(_pumpCard(_baseIdea, onTap: () {
-          tapped = true;
-        }));
+        await tester.pumpWidget(
+          _pumpCard(
+            _baseIdea,
+            onTap: () {
+              tapped = true;
+            },
+          ),
+        );
 
         await tester.tap(find.byType(IdeaCard));
         await tester.pump();
@@ -227,18 +246,26 @@ void main() {
         expect(tapped, isTrue);
       });
 
-      testWidgets('onTap is not called when card is not tapped', (tester) async {
+      testWidgets('onTap is not called when card is not tapped', (
+        tester,
+      ) async {
         var tapped = false;
-        await tester.pumpWidget(_pumpCard(_baseIdea, onTap: () {
-          tapped = true;
-        }));
+        await tester.pumpWidget(
+          _pumpCard(
+            _baseIdea,
+            onTap: () {
+              tapped = true;
+            },
+          ),
+        );
 
         // No tap
         expect(tapped, isFalse);
       });
 
-      testWidgets('card is tappable even when onTap is null (no crash)',
-          (tester) async {
+      testWidgets('card is tappable even when onTap is null (no crash)', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpCard(_baseIdea));
         await tester.tap(find.byType(IdeaCard));
         await tester.pump();
@@ -246,7 +273,9 @@ void main() {
         expect(find.byType(IdeaCard), findsOneWidget);
       });
 
-      testWidgets('card has testability key containing idea id', (tester) async {
+      testWidgets('card has testability key containing idea id', (
+        tester,
+      ) async {
         await tester.pumpWidget(_pumpCard(_baseIdea));
         expect(find.byKey(const Key('idea_card_abc-123')), findsOneWidget);
       });
@@ -256,12 +285,16 @@ void main() {
     // Tests navigation by capturing the route pushed.  Replace with a real
     // GoRouter test when GoRouter is available in the test environment.
     group('navigation path', () {
-      testWidgets('onTap receives callback with correct idea id', (tester) async {
+      testWidgets('onTap receives callback with correct idea id', (
+        tester,
+      ) async {
         String? navigatedTo;
-        await tester.pumpWidget(_pumpCard(
-          _baseIdea,
-          onTap: () => navigatedTo = '/idea/${_baseIdea.id}',
-        ));
+        await tester.pumpWidget(
+          _pumpCard(
+            _baseIdea,
+            onTap: () => navigatedTo = '/idea/${_baseIdea.id}',
+          ),
+        );
 
         await tester.tap(find.byType(IdeaCard));
         await tester.pump();

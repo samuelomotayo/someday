@@ -8,7 +8,6 @@
 //             actual repository implementation end-to-end in isolation).
 
 import 'dart:convert';
-import 'package:mocktail/mocktail.dart';
 
 // ── Pattern 1: Mock the repository boundary ───────────────────────────────────
 //
@@ -124,9 +123,9 @@ class FakeAuthSession {
   });
 
   Map<String, dynamic> toJson() => {
-        'user': {'id': userId, 'email': email},
-        'access_token': accessToken,
-      };
+    'user': {'id': userId, 'email': email},
+    'access_token': accessToken,
+  };
 }
 
 // ── Error stubs ────────────────────────────────────────────────────────────────

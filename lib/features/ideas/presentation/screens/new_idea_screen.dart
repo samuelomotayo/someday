@@ -53,9 +53,15 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
       title: _titleCtrl.text.trim(),
       description: _descCtrl.text.trim(),
       createdAt: DateTime.now(),
-      timePeriod: _timePeriodCtrl.text.trim().isEmpty ? null : _timePeriodCtrl.text.trim(),
-      reasonForStopping: _reasonCtrl.text.trim().isEmpty ? null : _reasonCtrl.text.trim(),
-      emotionalNote: _emotionalCtrl.text.trim().isEmpty ? null : _emotionalCtrl.text.trim(),
+      timePeriod: _timePeriodCtrl.text.trim().isEmpty
+          ? null
+          : _timePeriodCtrl.text.trim(),
+      reasonForStopping: _reasonCtrl.text.trim().isEmpty
+          ? null
+          : _reasonCtrl.text.trim(),
+      emotionalNote: _emotionalCtrl.text.trim().isEmpty
+          ? null
+          : _emotionalCtrl.text.trim(),
       verdict: VerdictType.notYetAnalysed,
       aiOptIn: _aiOptIn,
     );
@@ -65,9 +71,9 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -122,7 +128,9 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
                   hintText: 'e.g. An app that tracks habit streaks',
                 ),
                 validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Give your idea a title';
+                  if (v == null || v.trim().isEmpty) {
+                    return 'Give your idea a title';
+                  }
                   return null;
                 },
               ),
@@ -130,8 +138,10 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: Text('Describe it in detail',
-                        style: theme.textTheme.titleMedium),
+                    child: Text(
+                      'Describe it in detail',
+                      style: theme.textTheme.titleMedium,
+                    ),
                   ),
                   VoiceInputButton(
                     size: 36,
@@ -149,7 +159,8 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
                 maxLines: 5,
                 maxLength: Idea.descriptionMaxLength,
                 decoration: const InputDecoration(
-                  hintText: 'What was the vision? Who was it for? What made you excited about it?',
+                  hintText:
+                      'What was the vision? Who was it for? What made you excited about it?',
                   alignLabelWithHint: true,
                 ),
                 validator: (v) {
@@ -158,7 +169,10 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              Text('When did you have this idea? (optional)', style: theme.textTheme.titleMedium),
+              Text(
+                'When did you have this idea? (optional)',
+                style: theme.textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _timePeriodCtrl,
@@ -167,7 +181,10 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text('Why did you stop? (optional)', style: theme.textTheme.titleMedium),
+              Text(
+                'Why did you stop? (optional)',
+                style: theme.textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _reasonCtrl,
@@ -178,7 +195,10 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text('How do you feel about it now? (optional)', style: theme.textTheme.titleMedium),
+              Text(
+                'How do you feel about it now? (optional)',
+                style: theme.textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _emotionalCtrl,
@@ -193,7 +213,10 @@ class _NewIdeaScreenState extends ConsumerState<NewIdeaScreen> {
               SwitchListTile(
                 value: _aiOptIn,
                 onChanged: (v) => setState(() => _aiOptIn = v),
-                title: Text('Allow AI analysis', style: theme.textTheme.titleSmall),
+                title: Text(
+                  'Allow AI analysis',
+                  style: theme.textTheme.titleSmall,
+                ),
                 subtitle: Text(
                   'Your idea text will be sent to Claude for a verdict.',
                   style: theme.textTheme.bodySmall,
@@ -250,7 +273,11 @@ class _VoicePromptBanner extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Color(0xFFC97D3A),
               ),
-              child: const Icon(Icons.mic_rounded, color: Colors.white, size: 22),
+              child: const Icon(
+                Icons.mic_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
