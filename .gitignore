@@ -45,3 +45,13 @@ app.*.map.json
 /android/app/release
 android/key.properties
 android/app/someday-release.jks
+.vercel
+.env*
+
+# Agent tooling (installed by vercel integration add)
+.agents/
+.claude/
+skills-lock.json
+
+# Supabase CLI local state
+supabase/.temp/

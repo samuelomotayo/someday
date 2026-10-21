@@ -196,10 +196,19 @@ create table if not exists user_analysis_usage (
   updated_at timestamptz not null default now()
 );
 
--- RPC called by the Edge Function after a successful analysis
+-- RPC called by the Edge Function after a successful analysis.
+-- The Edge Function calls this with the service_role key (auth.uid() is
+-- null in that context), so the guard below only blocks the public
+-- anon/authenticated call path — a direct REST call can't touch another
+-- user's usage count. Without it, `supabase db advisors` flags this as
+-- a SECURITY DEFINER function publicly callable with an arbitrary user id.
 create or replace function increment_analysis_usage(p_user_id uuid)
-returns void language plpgsql security definer as $$
+returns void language plpgsql security definer set search_path = public as $$
 begin
+  if auth.uid() is not null and p_user_id <> auth.uid() then
+    raise exception 'not authorized';
+  end if;
+
   insert into user_analysis_usage (user_id, count)
   values (p_user_id, 1)
   on conflict (user_id)
@@ -208,12 +217,18 @@ begin
 end;
 $$;
 
+-- Only the Edge Function (service_role) needs to call this — not the
+-- public API.
+revoke all on function increment_analysis_usage(uuid) from public, anon, authenticated;
+grant execute on function increment_analysis_usage(uuid) to service_role;
+
 -- Row-level security
 alter table user_analysis_usage enable row level security;
 
 create policy "Users can read own usage"
   on user_analysis_usage for select
-  using (auth.uid() = user_id);
+  to authenticated
+  using ((select auth.uid()) = user_id);
 ```
 
 The app also needs an `ideas` table. This is the source of truth for every idea a
@@ -240,10 +255,26 @@ create index if not exists ideas_user_id_idx on ideas (user_id);
 -- Row-level security — each user can only see/modify their own ideas
 alter table ideas enable row level security;
 
-create policy "Users can manage own ideas"
-  on ideas for all
-  using (auth.uid() = user_id)
-  with check (auth.uid() = user_id);
+create policy "Users can view own ideas"
+  on ideas for select
+  to authenticated
+  using ((select auth.uid()) = user_id);
+
+create policy "Users can insert own ideas"
+  on ideas for insert
+  to authenticated
+  with check ((select auth.uid()) = user_id);
+
+create policy "Users can update own ideas"
+  on ideas for update
+  to authenticated
+  using ((select auth.uid()) = user_id)
+  with check ((select auth.uid()) = user_id);
+
+create policy "Users can delete own ideas"
+  on ideas for delete
+  to authenticated
+  using ((select auth.uid()) = user_id);
 
 -- Required for realtime sync (live updates across devices/tabs)
 alter publication supabase_realtime add table ideas;
